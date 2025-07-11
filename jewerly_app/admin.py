@@ -1,3 +1,5 @@
 from django.contrib import admin
+from jewerly_app.models import Product, Material
 
-# Register your models here.
+admin.site.register(Product)
+admin.site.register(Material)

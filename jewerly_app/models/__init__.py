@@ -1,0 +1,1 @@
+from .products_materials import Product, Material
