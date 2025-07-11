@@ -13,13 +13,13 @@ class PriceList(models.Model):
         db_table = 'price_lists'
 
 
-class PriceListEntries(models.Model):
+class PriceListEntry(models.Model):
     price_list = models.ForeignKey(PriceList, on_delete=models.PROTECT)
     material = models.ForeignKey(Material, on_delete=models.PROTECT)
     price = models.DecimalField(max_digits=12, decimal_places=2)
 
     def __str__(self):
-        return str(self.price_list)
+        return str(self.price_list.start_date)
 
     class Meta:
         db_table = 'price_list_entries'
