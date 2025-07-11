@@ -1,5 +1,4 @@
 from django.db import models
-from .products_materials import Material
 
 
 class Client(models.Model):
@@ -14,8 +13,8 @@ class Client(models.Model):
 
 
 class ClientMaterial(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.PROTECT)
-    material = models.ForeignKey(Material, on_delete=models.PROTECT)
+    client = models.ForeignKey('Client', on_delete=models.PROTECT)
+    material = models.ForeignKey('Material', on_delete=models.PROTECT)
     amount = models.DecimalField(max_digits=12, decimal_places=2)
 
     def __str__(self):
@@ -23,11 +22,3 @@ class ClientMaterial(models.Model):
 
     class Meta:
         db_table = 'client_materials'
-
-
-class MaterialAuditEntry(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.PROTECT)
-    material = models.ForeignKey(Material, on_delete=models.PROTECT)
-    # user
-    description = models.TextField()
-    date = models.DateTimeField(auto_now_add=True)

@@ -22,3 +22,17 @@ class Material(models.Model):
 
     class Meta:
         db_table = 'materials'
+
+
+class MaterialAuditEntry(models.Model):
+    client = models.ForeignKey('Client', on_delete=models.PROTECT, null=True)
+    material = models.ForeignKey('Material', on_delete=models.PROTECT)
+    # user
+    description = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.material.name + ' user'
+
+    class Meta:
+        db_table = 'material_audit_entries'
