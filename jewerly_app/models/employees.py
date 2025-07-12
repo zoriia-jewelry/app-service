@@ -18,7 +18,7 @@ class EmployeeOrder(models.Model):
     order = models.ForeignKey('Order', on_delete=models.PROTECT)
 
     def __str__(self):
-        return f'orders: {self.employee.full_name}'
+        return f'employee: {self.employee.full_name} - order: {self.order.opened_at}'
 
     class Meta:
         db_table = 'employee_orders'

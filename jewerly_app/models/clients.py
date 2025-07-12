@@ -18,7 +18,7 @@ class ClientMaterial(models.Model):
     amount = models.DecimalField(max_digits=12, decimal_places=2)
 
     def __str__(self):
-        return self.client.full_name
+        return f'client: {self.client.full_name} - material: {self.material.name}'
 
     class Meta:
         db_table = 'client_materials'

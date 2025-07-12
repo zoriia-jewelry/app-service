@@ -18,7 +18,7 @@ class PriceListEntry(models.Model):
     price = models.DecimalField(max_digits=12, decimal_places=2)
 
     def __str__(self):
-        return str(self.price_list.start_date)
+        return f'price list: {str(self.price_list.start_date)} - material: {self.material.name}'
 
     class Meta:
         db_table = 'price_list_entries'

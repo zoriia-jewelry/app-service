@@ -12,7 +12,7 @@ class WorkUnit(models.Model):
     returned_with_loss = models.DecimalField(max_digits=17, decimal_places=2, null=True)
 
     def __str__(self):
-        return str(self.issued_at)
+        return f'{str(self.issued_at)} - {self.employee.full_name}'
 
     class Meta:
         db_table = 'work_units'

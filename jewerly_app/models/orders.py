@@ -13,7 +13,7 @@ class Order(models.Model):
     total_with_discount = models.DecimalField(max_digits=12, decimal_places=2, null=True)
 
     def __str__(self):
-        return f'{self.material} - {self.client} - {self.opened_at}'
+        return f'client: {self.client.full_name} - material: {self.material.name} - {self.opened_at}'
 
     class Meta:
         db_table = 'orders'
@@ -27,7 +27,7 @@ class OrderProduct(models.Model):
     notes = models.TextField()
 
     def __str__(self):
-        return f'{self.order} - {self.product} - {self.count}'
+        return f'order: {self.order.opened_at} - product: {self.product.name} - {self.count}'
 
     class Meta:
         db_table = 'order_products'

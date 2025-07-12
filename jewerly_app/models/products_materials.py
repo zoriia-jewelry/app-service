@@ -8,7 +8,7 @@ class Product(models.Model):
     is_archived = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.article_code
+        return f'{self.name} - {self.article_code}'
 
     class Meta:
         db_table = 'products'
@@ -32,7 +32,7 @@ class MaterialAuditEntry(models.Model):
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.material.name + ' user'
+        return f'user - {self.material.name} - {self.date}'
 
     class Meta:
         db_table = 'material_audit_entries'
