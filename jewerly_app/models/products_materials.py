@@ -24,15 +24,27 @@ class Material(models.Model):
         db_table = 'materials'
 
 
-class MaterialAuditEntry(models.Model):
-    client = models.ForeignKey('Client', on_delete=models.PROTECT, null=True)
-    material = models.ForeignKey('Material', on_delete=models.PROTECT)
+class MaterialAuditRecord(models.Model):
     # user
+    client = models.ForeignKey('Client', on_delete=models.PROTECT, null=True)
     description = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'user - {self.material.name} - {self.date}'
+        return f'user - {str(self.date)}'
 
     class Meta:
-        db_table = 'material_audit_entries'
+        db_table = 'material_audit_records'
+
+
+class MaterialAuditRecordRow(models.Model):
+    material = models.ForeignKey('Material', on_delete=models.PROTECT, null=True)
+    amount = models.DecimalField(max_digits=12, decimal_places=2, null=True)
+    material_audit_record = models.ForeignKey('MaterialAuditRecord', on_delete=models.PROTECT)
+
+    def __str__(self):
+        material_name = self.material.name if self.material else 'Вартість'
+        return f'{material_name} - {self.amount}'
+
+    class Meta:
+        db_table = 'material_audit_record_rows'
