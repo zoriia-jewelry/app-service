@@ -1,22 +1,18 @@
-from django.shortcuts import render
-from rest_framework import mixins, generics
-from jewerly_app.serializers import *
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter
+from rest_framework import generics
+from jewerly_app.api import serializers
+from jewerly_app.models import *
 
 
-class EmployeeList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
+class EmployeeList(generics.ListCreateAPIView):
     queryset = Employee.objects.all()
-    serializer_class = EmployeeSerializer
-
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+    serializer_class = serializers.EmployeeSerializer
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    filterset_fields = ['is_archived']
+    ordering = ['id']
 
 
-class EmployeeDetail(mixins.RetrieveModelMixin, generics.GenericAPIView):
+class EmployeeDetail(generics.RetrieveUpdateAPIView):
     queryset = Employee.objects.all()
-    serializer_class = EmployeeSerializer
-
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
+    serializer_class = serializers.EmployeeSerializer
