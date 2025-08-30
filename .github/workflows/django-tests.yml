@@ -10,6 +10,31 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:16.8-alpine3.20
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: qwerty
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      SECRET_KEY: test-secret-key
+      DATABASE_ENGINE: django.db.backends.postgresql
+      POSTGRES_DB: test_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: qwerty
+      DATABASE_HOST: localhost
+      DATABASE_PORT: 5432
+      DJANGO_SETTINGS_MODULE: myproject.settings
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -21,13 +46,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python3 -m pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Run migrations
         run: |
-          python3 manage.py migrate --noinput
+          python manage.py migrate --noinput
 
       - name: Run Django tests
         run: |
-          python3 manage.py test
+          python manage.py test
