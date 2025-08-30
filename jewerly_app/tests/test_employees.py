@@ -27,7 +27,7 @@ class EmployeeTests(APITestCase):
         self.assertEqual(Employee.objects.count(), 2)
 
     def test_filter_active_employees(self):
-        response = self.client.get(self.list_url, {'is_archived': 'True'})
+        response = self.client.get(self.list_url, {'isArchived': 'True'})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         results = response.data.get('entries', response.data)
@@ -60,7 +60,7 @@ class EmployeeTests(APITestCase):
         updated_data = {
             'name': 'Недашківська Валерія Віталіївна (оновлено)',
             'phone': '+380501112233',
-            'is_archived': True
+            'isArchived': True
         }
         response = self.client.put(self.detail_url, updated_data, format='json')
 
@@ -72,7 +72,7 @@ class EmployeeTests(APITestCase):
         self.assertTrue(self.active_employee.is_archived)
 
     def test_partially_update_employee(self):
-        response = self.client.patch(self.detail_url, {'is_archived': True}, format='json')
+        response = self.client.patch(self.detail_url, {'isArchived': True}, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.active_employee.refresh_from_db()
