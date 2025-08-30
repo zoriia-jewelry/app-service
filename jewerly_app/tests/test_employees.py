@@ -30,26 +30,26 @@ class EmployeeTests(APITestCase):
         response = self.client.get(self.list_url, {'is_archived': 'True'})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        results = response.data.get('results', response.data)
+        results = response.data.get('entries', response.data)
         self.assertEqual(len(results), 1)
-        self.assertEqual(results[0]['full_name'], self.archived_employee.full_name)
+        self.assertEqual(results[0]['name'], self.archived_employee.full_name)
 
     def test_create_employee(self):
         new_employee = {
-            'full_name': 'Коваленко Андрій Петрович',
-            'phone_number': '+380631234567',
+            'name': 'Коваленко Андрій Петрович',
+            'phone': '+380631234567',
         }
         response = self.client.post(self.list_url, new_employee, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Employee.objects.count(), 3)
-        self.assertEqual(response.data['full_name'], new_employee['full_name'])
+        self.assertEqual(response.data['name'], new_employee['name'])
 
     def test_get_employee_detail(self):
         response = self.client.get(self.detail_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['full_name'], self.active_employee.full_name)
+        self.assertEqual(response.data['name'], self.active_employee.full_name)
 
     def test_get_nonexistent_employee_detail(self):
         response = self.client.get(reverse('employee-detail', kwargs={'pk': 1414}))
@@ -58,8 +58,8 @@ class EmployeeTests(APITestCase):
 
     def test_update_employee(self):
         updated_data = {
-            'full_name': 'Недашківська Валерія Віталіївна (оновлено)',
-            'phone_number': '+380501112233',
+            'name': 'Недашківська Валерія Віталіївна (оновлено)',
+            'phone': '+380501112233',
             'is_archived': True
         }
         response = self.client.put(self.detail_url, updated_data, format='json')
@@ -67,8 +67,8 @@ class EmployeeTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.active_employee.refresh_from_db()
 
-        self.assertEqual(self.active_employee.full_name, updated_data['full_name'])
-        self.assertEqual(self.active_employee.phone_number, updated_data['phone_number'])
+        self.assertEqual(self.active_employee.full_name, updated_data['name'])
+        self.assertEqual(self.active_employee.phone_number, updated_data['phone'])
         self.assertTrue(self.active_employee.is_archived)
 
     def test_partially_update_employee(self):
@@ -85,29 +85,29 @@ class EmployeeInvalidDataTests(APITestCase):
 
     def test_create_employee_without_full_name(self):
         data = {
-            'phone_number': '+380671112233'
+            'phone': '+380671112233'
         }
         response = self.client.post(self.list_url, data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn('full_name', response.data)
+        self.assertIn('name', response.data)
 
     def test_create_employee_without_phone_number(self):
         data = {
-            'full_name': 'Мельник Олена Вікторівна'
+            'name': 'Мельник Олена Вікторівна'
         }
         response = self.client.post(self.list_url, data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn('phone_number', response.data)
+        self.assertIn('phone', response.data)
 
     def test_create_employee_with_empty_strings(self):
         data = {
-            'full_name': '',
-            'phone_number': ''
+            'name': '',
+            'phone': ''
         }
         response = self.client.post(self.list_url, data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertIn('full_name', response.data)
-        self.assertIn('phone_number', response.data)
+        self.assertIn('name', response.data)
+        self.assertIn('phone', response.data)
