@@ -10,34 +10,17 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:16.8-alpine3.20
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: qwerty
-          POSTGRES_DB: test_db
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd="pg_isready -U postgres"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-
-    env:
-      SECRET_KEY: test-secret-key
-      DATABASE_ENGINE: django.db.backends.postgresql
-      POSTGRES_DB: test_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: qwerty
-      DATABASE_HOST: localhost
-      DATABASE_PORT: 5432
-      DJANGO_SETTINGS_MODULE: myproject.settings
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Prepare .env
+        run: |
+          cp .env.example .env
+
+      - name: Run docker compose
+        run: |
+          cd ./docker && ocker compose up
 
       - name: Set up Python
         uses: actions/setup-python@v4
