@@ -20,7 +20,7 @@ jobs:
 
       - name: Run docker compose
         run: |
-          cd ./docker && docker compose up
+          cd ./docker && docker compose up -d
 
       - name: Set up Python
         uses: actions/setup-python@v4
