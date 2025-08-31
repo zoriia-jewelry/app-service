@@ -8,13 +8,21 @@ from jewerly_app.models import *
 
 class EmployeeList(generics.ListCreateAPIView):
     queryset = Employee.objects.all()
-    serializer_class = serializers.EmployeeSerializer
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['is_archived']
     pagination_class = PaginationPageSize
     ordering = ['id']
 
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return serializers.EmployeeReadSerializer
+        return serializers.EmployeeUpdateSerializer
+
 
 class EmployeeDetail(generics.RetrieveUpdateAPIView):
     queryset = Employee.objects.all()
-    serializer_class = serializers.EmployeeSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return serializers.EmployeeReadSerializer
+        return serializers.EmployeeUpdateSerializer
