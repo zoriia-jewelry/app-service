@@ -21,7 +21,6 @@ class EmployeeUpdateSerializer(serializers.ModelSerializer):
 
 
 class ProductReadSerializer(serializers.ModelSerializer):
-    name = serializers.CharField(source='full_name', read_only=True)
     article = serializers.CharField(source='article_code', read_only=True)
     pictureUrl = serializers.URLField(source='photo_url', read_only=True, required=False)
 
@@ -31,7 +30,6 @@ class ProductReadSerializer(serializers.ModelSerializer):
 
 
 class ProductUpdateSerializer(serializers.ModelSerializer):
-    name = serializers.CharField(source='full_name')
     article = serializers.CharField(source='article_code')
     pictureUrl = serializers.URLField(source='photo_url', required=False)
 
