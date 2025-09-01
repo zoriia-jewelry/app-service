@@ -18,3 +18,23 @@ class EmployeeUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Employee
         fields = ['name', 'phone', 'is_archived']
+
+
+class ProductReadSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(source='full_name', read_only=True)
+    article = serializers.CharField(source='article_code', read_only=True)
+    pictureUrl = serializers.URLField(source='photo_url', read_only=True, required=False)
+
+    class Meta:
+        model = Product
+        fields = ['id', 'name', 'article', 'pictureUrl']
+
+
+class ProductUpdateSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(source='full_name')
+    article = serializers.CharField(source='article_code')
+    pictureUrl = serializers.URLField(source='photo_url', required=False)
+
+    class Meta:
+        model = Product
+        fields = ['name', 'article', 'pictureUrl', 'is_archived']
