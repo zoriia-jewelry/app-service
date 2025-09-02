@@ -4,7 +4,7 @@ from django.urls import reverse
 from jewerly_app.models.products_materials import Product
 
 
-class ProductTests(APITestCase):
+class TestsProduct(APITestCase):
     def setUp(self):
         self.active_product = Product.objects.create(
             name='Обручка з діамантом',
@@ -32,7 +32,7 @@ class ProductTests(APITestCase):
         response = self.client.get(self.list_url, {'isArchived': 'True'})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        results = response.data.get('entries', response.data)
+        results = response.data
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0]['name'], self.archived_product.name)
 
@@ -47,6 +47,8 @@ class ProductTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Product.objects.count(), 3)
         self.assertEqual(response.data['name'], new_product_data['name'])
+        self.assertEqual(response.data['article'], new_product_data['article'])
+        self.assertEqual(response.data['picture_url'], new_product_data['pictureUrl'])
 
     def test_create_product_without_photo(self):
         new_product_data = {
@@ -58,6 +60,7 @@ class ProductTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Product.objects.count(), 3)
         self.assertEqual(response.data['name'], new_product_data['name'])
+        self.assertEqual(response.data['article'], new_product_data['article'])
         self.assertIsNone(response.data.get('pictureUrl'))
 
     def test_get_product_detail(self):
@@ -96,7 +99,7 @@ class ProductTests(APITestCase):
         self.assertTrue(self.active_product.is_archived)
 
 
-class ProductInvalidDataTests(APITestCase):
+class TestsProductInvalidData(APITestCase):
     def setUp(self):
         self.list_url = reverse('product-list')
 

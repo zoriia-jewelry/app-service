@@ -4,7 +4,7 @@ from django.urls import reverse
 from jewerly_app.models.employees import Employee
 
 
-class EmployeeTests(APITestCase):
+class TestsEmployee(APITestCase):
     def setUp(self):
         self.active_employee = Employee.objects.create(
             full_name='Недашківська Валерія Віталіївна',
@@ -79,7 +79,7 @@ class EmployeeTests(APITestCase):
         self.assertTrue(self.active_employee.is_archived)
 
 
-class EmployeeInvalidDataTests(APITestCase):
+class TestsEmployeeInvalidData(APITestCase):
     def setUp(self):
         self.list_url = reverse('employee-list')
 
