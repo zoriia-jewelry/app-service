@@ -48,7 +48,7 @@ class TestsProduct(APITestCase):
         self.assertEqual(Product.objects.count(), 3)
         self.assertEqual(response.data['name'], new_product_data['name'])
         self.assertEqual(response.data['article'], new_product_data['article'])
-        self.assertEqual(response.data['picture_url'], new_product_data['pictureUrl'])
+        self.assertEqual(response.json()['pictureUrl'], new_product_data['pictureUrl'])
 
     def test_create_product_without_photo(self):
         new_product_data = {
