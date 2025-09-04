@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from jewerly_app.models import *
-from jewerly_app.services.upload_image import s3_service
+from jewerly_app.services.s3_service import s3_service
 
 
 class ProductReadSerializer(serializers.ModelSerializer):

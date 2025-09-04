@@ -1,5 +1,5 @@
 from django.urls import path
-from jewerly_app import views
+from jewerly_app.api import views
 
 urlpatterns = [
     path('employees/', views.EmployeeListView.as_view(), name='employee-list'),
