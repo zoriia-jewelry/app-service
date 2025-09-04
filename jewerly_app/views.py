@@ -32,7 +32,7 @@ class ProductListView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     filter_backends = [DjangoFilterBackend, OrderingFilter, SearchFilter]
     filterset_fields = ['is_archived']
-    search_fields = ['name', 'article']
+    search_fields = ['name', 'article_code']
     ordering = ['id']
 
     def get_serializer_class(self):
