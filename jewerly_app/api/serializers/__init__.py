@@ -1,0 +1,2 @@
+from jewerly_app.api.serializers.products import ProductReadSerializer, ProductUpdateSerializer
+from jewerly_app.api.serializers.employees import EmployeeReadSerializer, EmployeeUpdateSerializer

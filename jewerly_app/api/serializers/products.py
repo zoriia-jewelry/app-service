@@ -1,24 +1,6 @@
 from rest_framework import serializers
 from jewerly_app.models import *
-from jewerly_app.services.upload_image import upload_image_to_s3
-
-
-class EmployeeReadSerializer(serializers.ModelSerializer):
-    name = serializers.CharField(source='full_name', read_only=True)
-    phone = serializers.CharField(source='phone_number', read_only=True)
-
-    class Meta:
-        model = Employee
-        fields = ['id', 'name', 'phone']
-
-
-class EmployeeUpdateSerializer(serializers.ModelSerializer):
-    name = serializers.CharField(source='full_name')
-    phone = serializers.CharField(source='phone_number')
-
-    class Meta:
-        model = Employee
-        fields = ['name', 'phone', 'is_archived']
+from jewerly_app.services.upload_image import s3_service
 
 
 class ProductReadSerializer(serializers.ModelSerializer):
@@ -44,7 +26,7 @@ class ProductUpdateSerializer(serializers.ModelSerializer):
         product = super().create(validated_data)
 
         if picture_base_64:
-            product.photo_url = upload_image_to_s3(picture_base_64, product.id)
+            product.photo_url = s3_service.upload_image_to_s3(picture_base_64, product.id)
             product.save(update_fields=["photo_url"])
 
         return product
@@ -54,7 +36,7 @@ class ProductUpdateSerializer(serializers.ModelSerializer):
         product = super().update(instance, validated_data)
 
         if picture_base_64:
-            product.photo_url = upload_image_to_s3(picture_base_64, product.id)
+            product.photo_url = s3_service.upload_image_to_s3(picture_base_64, product.id)
             product.save(update_fields=["photo_url"])
 
         return product
