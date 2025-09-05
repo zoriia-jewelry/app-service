@@ -19,8 +19,24 @@ DEBUG = os.environ.get('DEBUG')
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
 ALLOWED_HOSTS = [] if not any(ALLOWED_HOSTS) else ALLOWED_HOSTS
 
-# Application definition
+CORS_ALLOW_ALL_ORIGINS = True
 
+# AWS
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+
+# File storage
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = 'eu-central-1'
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
+# Store media files in S3
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# Optional — the URL through which the files will be accessible
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
+
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -31,6 +47,8 @@ INSTALLED_APPS = [
     'jewerly_app',
     'rest_framework',
     'django_filters',
+    'corsheaders',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -42,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'djangorestframework_camel_case.middleware.CamelCaseMiddleWare',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'jewerly_service.urls'
